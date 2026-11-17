@@ -1,17 +1,10 @@
 
-<?php
-require_once "config/database.php";
-
-$stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC LIMIT 8");
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SneakerVault | Official Store</title>
+<title>SneakerVault | Premium Sneakers</title>
 
 <style>
 * {
@@ -22,167 +15,201 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 body {
-    background: #fff;
-    color: #111;
+    background: #080808;
+    color: white;
 }
 
 header {
-    background: #000;
-    color: white;
-    padding: 25px 8%;
+    background: #050505;
+    border-bottom: 1px solid #222;
+    padding: 22px 8%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 27px;
+    font-weight: 900;
     letter-spacing: 2px;
 }
 
 .logo span {
-    color: #999;
+    color: #00f7ff;
+    text-shadow: 0 0 12px #00f7ff;
 }
 
 nav a {
-    color: white;
+    color: #ddd;
     text-decoration: none;
-    margin-left: 22px;
+    margin-left: 25px;
     font-size: 13px;
-    font-weight: bold;
+    transition: .3s;
 }
 
 nav a:hover {
-    color: #aaa;
+    color: #00f7ff;
+    text-shadow: 0 0 10px #00f7ff;
 }
 
 .hero {
-    background: #111;
-    color: white;
-    min-height: 420px;
+    min-height: 540px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 50px 20px;
+    background:
+        radial-gradient(ellipse at center, #102a2b 0%, #111 40%, #080808 75%);
 }
 
 .hero h1 {
-    font-size: 65px;
-    letter-spacing: 4px;
+    font-size: clamp(42px, 7vw, 75px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: #00f7ff;
+    text-shadow: 0 0 15px #00f7ff;
 }
 
 .hero p {
-    color: #bbb;
-    margin: 20px 0 30px;
+    color: #aaa;
+    font-size: 17px;
+    margin-bottom: 35px;
 }
 
-.button {
-    background: white;
-    color: black;
-    padding: 15px 35px;
+.btn {
+    display: inline-block;
+    padding: 16px 38px;
+    color: #00f7ff;
+    border: 1px solid #00f7ff;
     text-decoration: none;
     font-weight: bold;
+    letter-spacing: 2px;
+    transition: .3s;
+    box-shadow: 0 0 12px #00f7ff33;
 }
 
-.button:hover {
-    background: #ccc;
+.btn:hover {
+    background: #00f7ff;
+    color: black;
+    box-shadow: 0 0 25px #00f7ff;
 }
 
 .products {
-    padding: 65px 8%;
+    padding: 75px 8%;
 }
 
-.products h2 {
+.section-title {
     text-align: center;
     font-size: 32px;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
+    letter-spacing: 2px;
+}
+
+.section-title span {
+    color: #00f7ff;
+    text-shadow: 0 0 10px #00f7ff;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 25px;
 }
 
 .card {
-    background: #f5f5f5;
+    background: #111;
+    border: 1px solid #242424;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 25px;
     transition: .3s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-7px);
+    border-color: #00f7ff;
+    box-shadow: 0 0 20px #00f7ff22;
 }
 
 .card img {
     width: 100%;
-    height: 220px;
+    height: 230px;
     object-fit: cover;
+    background: #1b1b1b;
 }
 
-.info {
-    padding: 20px;
-}
-
-.info h3 {
-    margin-bottom: 12px;
+.card h3 {
+    margin: 20px 10px 10px;
+    font-size: 18px;
 }
 
 .price {
+    color: #00f7ff;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 18px;
-}
-
-.info a {
-    display: block;
-    background: black;
-    color: white;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-}
-
-.info a:hover {
-    background: #444;
-}
-
-.empty {
-    text-align: center;
-    grid-column: 1 / -1;
-}
-
-.about {
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 65px 15%;
-}
-
-.about h2 {
     margin-bottom: 20px;
 }
 
+.card a {
+    display: inline-block;
+    padding: 11px 25px;
+    background: #00f7ff;
+    color: #000;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+.card a:hover {
+    box-shadow: 0 0 15px #00f7ff;
+}
+
+.about {
+    padding: 85px 15%;
+    text-align: center;
+    background: #101010;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+}
+
+.about h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.about h2 span {
+    color: #00f7ff;
+}
+
 .about p {
-    color: #bbb;
-    line-height: 1.8;
+    color: #aaa;
+    line-height: 1.9;
 }
 
 footer {
-    background: black;
-    color: white;
-    padding: 25px;
     text-align: center;
+    padding: 30px;
+    background: #050505;
+    color: #777;
+    font-size: 13px;
 }
 
-@media(max-width: 850px) {
+@media(max-width: 900px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media(max-width: 550px) {
+@media(max-width: 600px) {
     header {
         flex-direction: column;
         gap: 20px;
@@ -192,19 +219,19 @@ footer {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 12px;
+        gap: 15px;
     }
 
     nav a {
         margin: 0;
     }
 
-    .hero h1 {
-        font-size: 38px;
-    }
-
     .grid {
         grid-template-columns: 1fr;
+    }
+
+    .products {
+        padding: 50px 6%;
     }
 }
 </style>
@@ -216,7 +243,7 @@ footer {
     <div class="logo">SNEAKER<span>VAULT</span></div>
 
     <nav>
-        <a href="index.php">HOME</a>
+        <a href="index.html">HOME</a>
         <a href="shop.php">SHOP</a>
         <a href="cart.php">CART</a>
         <a href="login.php">LOGIN</a>
@@ -225,68 +252,86 @@ footer {
 </header>
 
 <section class="hero">
-    <h1>FIND YOUR STYLE.</h1>
-    <p>Premium sneakers. Iconic brands. Timeless style.</p>
-    <a href="shop.php" class="button">EXPLORE COLLECTION</a>
+    <h1>STEP INTO <span>STYLE.</span></h1>
+    <p>Discover premium sneakers. Find your next favourite pair.</p>
+    <a href="shop.php" class="btn">EXPLORE COLLECTION</a>
 </section>
 
 <section class="products">
-    <h2>NEW ARRIVALS</h2>
+    <h2 class="section-title">LATEST <span>ARRIVALS</span></h2>
 
-    <div class="grid">
-
-    <?php if (count($products) > 0): ?>
-
-        <?php foreach ($products as $p): ?>
-
-        <div class="card">
-
-            <img
-                src="<?= htmlspecialchars($p['image'] ?: 'images/placeholder.jpg') ?>"
-                alt="<?= htmlspecialchars($p['name']) ?>"
-                onerror="this.src='images/placeholder.jpg'"
-            >
-
-            <div class="info">
-
-                <h3><?= htmlspecialchars($p['name']) ?></h3>
-
-                <p class="price">
-                    €<?= number_format((float)$p['price'], 2) ?>
-                </p>
-
-                <a href="product.php?id=<?= (int)$p['id'] ?>">
-                    VIEW DETAILS
-                </a>
-
-            </div>
-        </div>
-
-        <?php endforeach; ?>
-
-    <?php else: ?>
-
-        <p class="empty">No sneakers available yet. Visit our shop soon!</p>
-
-    <?php endif; ?>
-
+    <div class="grid" id="products">
+        <p>Loading sneakers...</p>
     </div>
 </section>
 
 <section class="about">
-    <h2>WELCOME TO SNEAKERVAULT</h2>
-
+    <h2>ABOUT <span>SNEAKERVAULT</span></h2>
     <p>
-        Discover the latest sneaker releases and timeless classics.
-        SneakerVault brings together style, comfort and quality
-        in one place. Find the perfect sneakers for your collection.
+        SneakerVault is your destination for premium sneaker style.
+        Explore iconic brands, discover fresh releases and find
+        the perfect sneakers to express yourself.
     </p>
 </section>
 
 <footer>
-    <p>© 2026 SneakerVault. All Rights Reserved.</p>
+    © 2026 SNEAKERVAULT — ALL RIGHTS RESERVED
 </footer>
+
+<script>
+async function loadProducts() {
+    const container = document.getElementById("products");
+
+    try {
+        const response = await fetch("get-products.php");
+
+        if (!response.ok) {
+            throw new Error("Product loading failed");
+        }
+
+        const products = await response.json();
+
+        if (!Array.isArray(products) || products.length === 0) {
+            container.innerHTML = "<p>No sneakers available yet.</p>";
+            return;
+        }
+
+        container.innerHTML = products.map(product => {
+            const name = escapeHTML(product.name);
+            const image = escapeHTML(product.image || "images/placeholder.jpg");
+            const price = Number(product.price).toFixed(2);
+            const id = Number(product.id);
+
+            return `
+                <div class="card">
+                    <img src="${image}"
+                         alt="${name}"
+                         onerror="this.src='images/placeholder.jpg'">
+                    <h3>${name}</h3>
+                    <div class="price">€${price}</div>
+                    <a href="product.php?id=${id}">VIEW PRODUCT</a>
+                </div>
+            `;
+        }).join("");
+
+    } catch (error) {
+        container.innerHTML =
+            "<p>Unable to load sneakers. Check your database connection.</p>";
+    }
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[char]);
+}
+
+loadProducts();
+</script>
 
 </body>
 </html>
-
