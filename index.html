@@ -19,6 +19,7 @@ body {
     color: white;
 }
 
+/* HEADER */
 header {
     background: #050505;
     border-bottom: 1px solid #222;
@@ -32,6 +33,8 @@ header {
     font-size: 27px;
     font-weight: 900;
     letter-spacing: 2px;
+    text-decoration: none;
+    color: white;
 }
 
 .logo span {
@@ -52,6 +55,7 @@ nav a:hover {
     text-shadow: 0 0 10px #00f7ff;
 }
 
+/* HERO */
 .hero {
     min-height: 540px;
     display: flex;
@@ -100,14 +104,15 @@ nav a:hover {
     box-shadow: 0 0 25px #00f7ff;
 }
 
+/* LATEST ARRIVALS */
 .products {
-    padding: 75px 8%;
+    padding: 75px 6%;
 }
 
 .section-title {
     text-align: center;
     font-size: 32px;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
     letter-spacing: 2px;
 }
 
@@ -116,13 +121,33 @@ nav a:hover {
     text-shadow: 0 0 10px #00f7ff;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 25px;
+/* SLIDER */
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
 }
 
+.product-slider {
+    display: flex;
+    gap: 25px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 15px 5px 25px;
+    flex: 1;
+    min-width: 0;
+    scroll-snap-type: x mandatory;
+}
+
+.product-slider::-webkit-scrollbar {
+    display: none;
+}
+
+/* PRODUCT CARD */
 .card {
+    flex: 0 0 260px;
     background: #111;
     border: 1px solid #242424;
     border-radius: 12px;
@@ -130,18 +155,20 @@ nav a:hover {
     text-align: center;
     padding-bottom: 25px;
     transition: .3s;
+    scroll-snap-align: start;
 }
 
 .card:hover {
     transform: translateY(-7px);
     border-color: #00f7ff;
-    box-shadow: 0 0 20px #00f7ff22;
+    box-shadow: 0 0 20px #00f7ff44;
 }
 
 .card img {
     width: 100%;
     height: 230px;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 10px;
     background: #1b1b1b;
 }
 
@@ -157,7 +184,7 @@ nav a:hover {
     margin-bottom: 20px;
 }
 
-.card a {
+.card .view-btn {
     display: inline-block;
     padding: 11px 25px;
     background: #00f7ff;
@@ -169,10 +196,47 @@ nav a:hover {
     transition: .3s;
 }
 
-.card a:hover {
+.card .view-btn:hover {
     box-shadow: 0 0 15px #00f7ff;
 }
 
+/* SLIDER ARROWS */
+.slider-arrow {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #00f7ff;
+    border-radius: 50%;
+    background: #00f7ff;
+    color: #000;
+    font-size: 23px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.slider-arrow:hover {
+    background: transparent;
+    color: #00f7ff;
+    box-shadow: 0 0 15px #00f7ff;
+}
+
+.loading,
+.error {
+    width: 100%;
+    text-align: center;
+    padding: 40px;
+}
+
+.loading {
+    color: #00f7ff;
+}
+
+.error {
+    color: #ff7777;
+}
+
+/* ABOUT */
 .about {
     padding: 85px 15%;
     text-align: center;
@@ -195,6 +259,7 @@ nav a:hover {
     line-height: 1.9;
 }
 
+/* FOOTER */
 footer {
     text-align: center;
     padding: 30px;
@@ -203,12 +268,7 @@ footer {
     font-size: 13px;
 }
 
-@media(max-width: 900px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
+/* RESPONSIVE */
 @media(max-width: 600px) {
     header {
         flex-direction: column;
@@ -226,12 +286,26 @@ footer {
         margin: 0;
     }
 
-    .grid {
-        grid-template-columns: 1fr;
+    .products {
+        padding: 50px 4%;
     }
 
-    .products {
-        padding: 50px 6%;
+    .card {
+        flex-basis: 220px;
+    }
+
+    .slider-wrapper {
+        gap: 7px;
+    }
+
+    .slider-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .about {
+        padding: 60px 8%;
     }
 }
 </style>
@@ -239,88 +313,171 @@ footer {
 
 <body>
 
+<!-- HEADER -->
 <header>
-    <div class="logo">SNEAKER<span>VAULT</span></div>
+    <a href="index.html" class="logo">
+        SNEAKER<span>VAULT</span>
+    </a>
 
     <nav>
         <a href="index.html">HOME</a>
         <a href="shop.php">SHOP</a>
-        <a href="cart.php">CART</a>
+        <a href="cart.php">CART 🛒</a>
         <a href="login.php">LOGIN</a>
         <a href="register.php">REGISTER</a>
     </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
     <h1>STEP INTO <span>STYLE.</span></h1>
-    <p>Discover premium sneakers. Find your next favourite pair.</p>
-    <a href="shop.php" class="btn">EXPLORE COLLECTION</a>
+
+    <p>
+        Discover premium sneakers. Find your next favourite pair.
+    </p>
+
+    <a href="shop.php" class="btn">
+        EXPLORE COLLECTION
+    </a>
 </section>
 
+<!-- LATEST ARRIVALS SLIDER -->
 <section class="products">
-    <h2 class="section-title">LATEST <span>ARRIVALS</span></h2>
 
-    <div class="grid" id="products">
-        <p>Loading sneakers...</p>
+    <h2 class="section-title">
+        LATEST <span>ARRIVALS</span>
+    </h2>
+
+    <div class="slider-wrapper">
+
+        <button class="slider-arrow"
+                onclick="slideProducts(-1)"
+                aria-label="Previous sneakers">
+            &#10094;
+        </button>
+
+        <div class="product-slider" id="products">
+            <p class="loading">Loading sneakers...</p>
+        </div>
+
+        <button class="slider-arrow"
+                onclick="slideProducts(1)"
+                aria-label="Next sneakers">
+            &#10095;
+        </button>
+
     </div>
+
 </section>
 
+<!-- ABOUT -->
 <section class="about">
+
     <h2>ABOUT <span>SNEAKERVAULT</span></h2>
+
     <p>
         SneakerVault is your destination for premium sneaker style.
         Explore iconic brands, discover fresh releases and find
         the perfect sneakers to express yourself.
     </p>
+
 </section>
 
+<!-- FOOTER -->
 <footer>
     © 2026 SNEAKERVAULT — ALL RIGHTS RESERVED
 </footer>
 
 <script>
+
+/* LOAD PRODUCTS FROM DATABASE */
 async function loadProducts() {
+
     const container = document.getElementById("products");
 
     try {
+
         const response = await fetch("get-products.php");
 
         if (!response.ok) {
-            throw new Error("Product loading failed");
+            throw new Error("Server error: " + response.status);
         }
 
         const products = await response.json();
 
-        if (!Array.isArray(products) || products.length === 0) {
-            container.innerHTML = "<p>No sneakers available yet.</p>";
+        if (!Array.isArray(products)) {
+            throw new Error(products.error || "Invalid product data");
+        }
+
+        if (products.length === 0) {
+            container.innerHTML =
+                '<p class="loading">No sneakers available yet.</p>';
             return;
         }
 
         container.innerHTML = products.map(product => {
+
             const name = escapeHTML(product.name);
-            const image = escapeHTML(product.image || "images/placeholder.jpg");
-            const price = Number(product.price).toFixed(2);
+            const image = escapeHTML(
+                product.image || "images/placeholder.jpg"
+            );
+
+            const price = Number(product.price);
             const id = Number(product.id);
+
+            if (
+                !Number.isFinite(price) ||
+                !Number.isInteger(id) ||
+                id <= 0
+            ) {
+                return "";
+            }
 
             return `
                 <div class="card">
-                    <img src="${image}"
-                         alt="${name}"
-                         onerror="this.src='images/placeholder.jpg'">
+
+                    <img
+                        src="${image}"
+                        alt="${name}"
+                        onerror="this.onerror=null; this.src='images/placeholder.jpg';"
+                    >
+
                     <h3>${name}</h3>
-                    <div class="price">€${price}</div>
-                    <a href="product.php?id=${id}">VIEW PRODUCT</a>
+
+                    <div class="price">
+                        €${price.toFixed(2)}
+                    </div>
+
+                    <a href="product.php?id=${id}" class="view-btn">
+                        VIEW PRODUCT
+                    </a>
+
                 </div>
             `;
+
         }).join("");
 
+        if (!container.innerHTML.trim()) {
+            container.innerHTML =
+                '<p class="loading">No valid sneakers found.</p>';
+        }
+
     } catch (error) {
-        container.innerHTML =
-            "<p>Unable to load sneakers. Check your database connection.</p>";
+
+        console.error("Product loading error:", error);
+
+        container.innerHTML = `
+            <div class="error">
+                Unable to load sneakers.<br>
+                Check get-products.php and your database.
+            </div>
+        `;
     }
 }
 
+/* PREVENT HTML INJECTION */
 function escapeHTML(value) {
+
     return String(value).replace(/[&<>"']/g, char => ({
         '&': '&amp;',
         '<': '&lt;',
@@ -328,9 +485,30 @@ function escapeHTML(value) {
         '"': '&quot;',
         "'": '&#39;'
     })[char]);
+
 }
 
+/* SLIDER MOVEMENT */
+function slideProducts(direction) {
+
+    const slider = document.getElementById("products");
+
+    const card = slider.querySelector(".card");
+
+    if (!card) return;
+
+    const cardWidth = card.offsetWidth + 25;
+
+    slider.scrollBy({
+        left: direction * cardWidth * 2,
+        behavior: "smooth"
+    });
+
+}
+
+/* START */
 loadProducts();
+
 </script>
 
 </body>

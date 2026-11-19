@@ -4,6 +4,19 @@ require_once "config/database.php";
 
 $stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Add your sneaker images here.
+// The product names must match your database names.
+$productImages = [
+    "Nike Air Force 1" => "images/images (2).png",
+    "Nike Air Max 90" => "images/images.png",
+    "Nike Dunk Low" => "images/images (3).png",
+    "Nike Air Max 97" => "images/images (4).png",
+    "Adidas Samba OG" => "images/images (5).png",
+    "Adidas Campus 00s" => "images/images (6).png",
+    "Adidas Gazelle" => "images/images3.png",
+    "Adidas Ultraboost" => "images/images44.png"
+];
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +68,6 @@ nav a {
 
 nav a:hover {
     color: #00f7ff;
-    text-shadow: 0 0 10px #00f7ff;
 }
 
 .hero {
@@ -109,11 +121,6 @@ nav a:hover {
     outline: none;
 }
 
-.search:focus {
-    border-color: #00f7ff;
-    box-shadow: 0 0 10px #00f7ff44;
-}
-
 .grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -127,25 +134,31 @@ nav a:hover {
     overflow: hidden;
     text-align: center;
     padding-bottom: 22px;
+    min-width: 0;
     transition: .3s;
 }
 
 .card:hover {
-    transform: translateY(-7px);
+    transform: translateY(-5px);
     border-color: #00f7ff;
     box-shadow: 0 0 20px #00f7ff33;
 }
 
 .card img {
+    display: block;
     width: 100%;
-    height: 230px;
-    object-fit: cover;
+    height: 240px;
+    object-fit: contain;
+    padding: 15px;
     background: #191919;
 }
 
 .card h3 {
-    margin: 18px 10px 10px;
+    margin: 18px 10px 12px;
     font-size: 17px;
+    line-height: 1.5;
+    min-height: 50px;
+    overflow-wrap: anywhere;
 }
 
 .price {
@@ -166,10 +179,6 @@ nav a:hover {
     border-radius: 5px;
 }
 
-.card a:hover {
-    box-shadow: 0 0 15px #00f7ff;
-}
-
 .empty {
     text-align: center;
     color: #aaa;
@@ -188,7 +197,7 @@ footer {
 
 @media(max-width: 900px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -247,33 +256,34 @@ footer {
 
     <div class="top">
         <h2>ALL <span>SNEAKERS</span></h2>
-
-        <input
-            type="text"
-            id="search"
-            class="search"
-            placeholder="Search sneakers..."
-        >
+        <input type="text" id="search" class="search"
+               placeholder="Search sneakers...">
     </div>
 
-    <div class="grid" id="productGrid">
+    <div class="grid">
 
         <?php if (count($products) > 0): ?>
 
             <?php foreach ($products as $product): ?>
 
+                <?php
+                $name = $product['name'] ?? 'Sneaker';
+
+                // Use the image assigned above, or the database image.
+                $image = $productImages[$name]
+                    ?? ($product['image'] ?? 'images/placeholder.jpg');
+                ?>
+
                 <div class="card"
-                     data-name="<?= htmlspecialchars($product['name']) ?>">
+                     data-name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>">
 
                     <img
-                        src="<?= htmlspecialchars($product['image'] ?: 'images/placeholder.jpg') ?>"
-                        alt="<?= htmlspecialchars($product['name']) ?>"
-                        onerror="this.src='images/placeholder.jpg'"
+                        src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8') ?>"
+                        alt="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>"
+                        onerror="this.onerror=null; this.src='images/placeholder.jpg';"
                     >
 
-                    <h3>
-                        <?= htmlspecialchars($product['name']) ?>
-                    </h3>
+                    <h3><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></h3>
 
                     <div class="price">
                         €<?= number_format((float)$product['price'], 2) ?>
@@ -294,7 +304,6 @@ footer {
         <?php endif; ?>
 
     </div>
-
 </section>
 
 <footer>
@@ -306,18 +315,12 @@ const search = document.getElementById("search");
 const cards = document.querySelectorAll(".card");
 
 search.addEventListener("input", function() {
-
-    const value = this.value.toLowerCase();
+    const value = this.value.toLowerCase().trim();
 
     cards.forEach(card => {
-
-        const name = card.dataset.name.toLowerCase();
-
         card.style.display =
-            name.includes(value) ? "" : "none";
-
+            card.dataset.name.toLowerCase().includes(value) ? "" : "none";
     });
-
 });
 </script>
 
