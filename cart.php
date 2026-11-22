@@ -244,10 +244,10 @@ button, .shop-btn {
 <body>
 
 <header>
-    <a href="index.html" class="logo">SNEAKERVAULT</a>
+    <a href="index.php" class="logo">SNEAKERVAULT</a>
 
     <nav>
-        <a href="index.html">HOME</a>
+        <a href="index.php">HOME</a>
         <a href="shop.php">SHOP</a>
         <a href="cart.php">CART</a>
         <?php if (isset($_SESSION["user_id"])): ?>

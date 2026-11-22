@@ -5,8 +5,6 @@ require_once "config/database.php";
 $stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Add your sneaker images here.
-// The product names must match your database names.
 $productImages = [
     "Nike Air Force 1" => "images/images (2).png",
     "Nike Air Max 90" => "images/images.png",
@@ -26,208 +24,570 @@ $productImages = [
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shop | SneakerVault</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    background: #080808;
-    color: white;
+    background: #080a0c;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
 }
 
 header {
-    background: #050505;
-    border-bottom: 1px solid #222;
-    padding: 22px 8%;
+    height: 85px;
+    padding: 0 8%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(8,10,12,.95);
+    border-bottom: 1px solid #20262b;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(15px);
 }
 
 .logo {
-    font-size: 27px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
     font-weight: 900;
     letter-spacing: 2px;
 }
 
 .logo span {
-    color: #00f7ff;
-    text-shadow: 0 0 12px #00f7ff;
+    color: #00e5ff;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 
 nav a {
-    color: #ddd;
+    color: #aaa;
     text-decoration: none;
-    margin-left: 20px;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: .3s;
 }
 
-nav a:hover {
-    color: #00f7ff;
+nav a:hover,
+nav a.active {
+    color: #00e5ff;
+}
+
+nav .cart-link {
+    border: 1px solid #00e5ff;
+    color: #00e5ff;
+    padding: 11px 19px;
+    border-radius: 4px;
 }
 
 .hero {
-    text-align: center;
-    padding: 65px 20px;
-    background: radial-gradient(ellipse, #103033, #080808 70%);
+    min-height: 440px;
+    padding: 90px 8%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 85% 50%, #063d4655, transparent 45%),
+        linear-gradient(110deg,#10171b,#080a0c 75%);
+    border-bottom: 1px solid #1e292e;
+}
+
+.hero::after {
+    content: "SV";
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(170px,28vw,340px);
+    font-weight: 900;
+    color: rgba(0,229,255,.035);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.eyebrow {
+    color: #00e5ff;
+    font-size: 11px;
+    letter-spacing: 5px;
+    font-weight: 800;
+    margin-bottom: 23px;
 }
 
 .hero h1 {
-    font-size: clamp(35px, 6vw, 60px);
-    margin-bottom: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(45px,7vw,82px);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -4px;
+    margin-bottom: 22px;
 }
 
 .hero h1 span {
-    color: #00f7ff;
-    text-shadow: 0 0 15px #00f7ff;
+    color: #00e5ff;
 }
 
 .hero p {
-    color: #aaa;
+    color: #929da3;
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 430px;
+}
+
+.hero-button {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 16px 28px;
+    background: #00e5ff;
+    color: #05090b;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.hero-button:hover {
+    background: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px #00e5ff33;
+}
+
+.hero-decoration {
+    position: absolute;
+    right: 13%;
+    top: 50%;
+    transform: translateY(-50%) rotate(-20deg);
+    width: 260px;
+    height: 260px;
+    border: 1px solid #00e5ff33;
+    border-radius: 50%;
+    box-shadow: 0 0 80px #00e5ff0c;
+}
+
+.hero-decoration::before,
+.hero-decoration::after {
+    content: "";
+    position: absolute;
+    border: 1px solid #00e5ff22;
+    border-radius: 50%;
+}
+
+.hero-decoration::before {
+    inset: 22px;
+}
+
+.hero-decoration::after {
+    inset: 45px;
 }
 
 .shop {
-    padding: 55px 8%;
+    padding: 75px 8%;
+    max-width: 1600px;
+    margin: auto;
+}
+
+.section-label {
+    color: #00e5ff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin-bottom: 13px;
 }
 
 .top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 20px;
+    align-items: end;
+    gap: 25px;
     flex-wrap: wrap;
-    margin-bottom: 35px;
+    margin-bottom: 40px;
 }
 
 .top h2 {
-    font-size: 28px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(25px,4vw,38px);
+    font-weight: 900;
+    letter-spacing: -1px;
 }
 
 .top h2 span {
-    color: #00f7ff;
+    color: #00e5ff;
+}
+
+.top p {
+    color: #78858b;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.search-wrap {
+    display: flex;
+    align-items: center;
+    background: #11171b;
+    border: 1px solid #273238;
+    padding: 0 17px;
+    width: 290px;
+    transition: .3s;
+}
+
+.search-wrap:focus-within {
+    border-color: #00e5ff;
+    box-shadow: 0 0 20px #00e5ff12;
+}
+
+.search-icon {
+    color: #00e5ff;
+    font-size: 19px;
 }
 
 .search {
-    background: #111;
-    border: 1px solid #333;
+    width: 100%;
+    padding: 15px 12px;
+    background: transparent;
     color: white;
-    padding: 13px 18px;
-    border-radius: 6px;
-    width: 270px;
+    border: none;
     outline: none;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.search::placeholder {
+    color: #778187;
+}
+
+.stats {
+    display: flex;
+    gap: 30px;
+    padding: 20px 0;
+    border-top: 1px solid #20282d;
+    border-bottom: 1px solid #20282d;
+    margin-bottom: 35px;
+}
+
+.stat {
+    color: #77858c;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.stat strong {
+    color: white;
+    font-size: 14px;
+    margin-right: 5px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 23px;
 }
 
 .card {
-    background: #111;
-    border: 1px solid #242424;
-    border-radius: 12px;
+    background: #101518;
+    border: 1px solid #20292e;
+    position: relative;
     overflow: hidden;
-    text-align: center;
-    padding-bottom: 22px;
+    transition: .35s ease;
     min-width: 0;
-    transition: .3s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    border-color: #00f7ff;
-    box-shadow: 0 0 20px #00f7ff33;
+    transform: translateY(-8px);
+    border-color: #00e5ff88;
+    box-shadow: 0 15px 40px #0008,0 0 25px #00e5ff0b;
+}
+
+.image-box {
+    height: 245px;
+    background: linear-gradient(145deg,#1a2226,#111619);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-box::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: #00e5ff0b;
+    filter: blur(25px);
 }
 
 .card img {
-    display: block;
+    position: relative;
+    z-index: 1;
     width: 100%;
-    height: 240px;
+    height: 100%;
     object-fit: contain;
-    padding: 15px;
-    background: #191919;
+    padding: 20px;
+    transition: .5s ease;
+}
+
+.card:hover img {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+.product-number {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+    font-size: 10px;
+    color: #849198;
+    letter-spacing: 2px;
+}
+
+.product-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+    background: #00e5ff;
+    color: #05090b;
+    padding: 7px 10px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.card-info {
+    padding: 22px 20px;
+}
+
+.brand {
+    color: #00e5ff;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    margin-bottom: 10px;
 }
 
 .card h3 {
-    margin: 18px 10px 12px;
-    font-size: 17px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    min-height: 42px;
     line-height: 1.5;
-    min-height: 50px;
     overflow-wrap: anywhere;
 }
 
-.price {
-    color: #00f7ff;
-    font-size: 19px;
-    font-weight: bold;
-    margin-bottom: 18px;
+.card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 17px;
+    padding-top: 16px;
+    border-top: 1px solid #263036;
 }
 
-.card a {
-    display: inline-block;
-    background: #00f7ff;
-    color: black;
-    padding: 12px 25px;
+.price {
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.price small {
+    color: #00e5ff;
+    font-size: 11px;
+}
+
+.view-btn {
+    background: #00e5ff;
+    color: #05090b;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 12px;
-    border-radius: 5px;
+    padding: 11px 13px;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+.view-btn:hover {
+    background: white;
 }
 
 .empty {
+    grid-column: 1/-1;
     text-align: center;
-    color: #aaa;
-    padding: 50px;
-    grid-column: 1 / -1;
+    padding: 80px 20px;
+    background: #101518;
+    border: 1px solid #263036;
+    color: #929da3;
+}
+
+.empty h3 {
+    color: white;
+    font-size: 22px;
+    margin-bottom: 10px;
 }
 
 footer {
-    text-align: center;
-    padding: 30px;
-    background: #050505;
-    color: #777;
-    font-size: 13px;
-    margin-top: 50px;
+    background: #050708;
+    border-top: 1px solid #20282d;
+    padding: 45px 8% 25px;
 }
 
-@media(max-width: 900px) {
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+.footer-description {
+    color: #748087;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #929da3;
+    font-size: 11px;
+    transition: .3s;
+}
+
+.footer-links a:hover {
+    color: #00e5ff;
+}
+
+.copyright {
+    border-top: 1px solid #20282d;
+    padding-top: 22px;
+    color: #566168;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+@media(max-width:1100px) {
     .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3,minmax(0,1fr));
+    }
+
+    .hero-decoration {
+        right: 5%;
+        opacity: .5;
     }
 }
 
-@media(max-width: 600px) {
+@media(max-width:800px) {
     header {
+        padding: 20px 5%;
+        height: auto;
         flex-direction: column;
-        gap: 20px;
+        gap: 22px;
     }
 
     nav {
-        display: flex;
+        gap: 18px;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
     }
 
-    nav a {
-        margin: 0;
+    .hero {
+        padding: 80px 7%;
+    }
+
+    .hero-decoration {
+        right: -100px;
+        opacity: .3;
     }
 
     .grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 15px;
     }
 
     .shop {
-        padding: 40px 6%;
+        padding: 55px 5%;
+    }
+}
+
+@media(max-width:500px) {
+    nav {
+        gap: 14px;
     }
 
-    .search {
+    nav a {
+        font-size: 10px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .search-wrap {
         width: 100%;
+    }
+
+    .image-box {
+        height: 175px;
+    }
+
+    .card-info {
+        padding: 15px 12px;
+    }
+
+    .card h3 {
+        font-size: 12px;
+    }
+
+    .price {
+        font-size: 15px;
+    }
+
+    .view-btn {
+        padding: 10px 9px;
+        font-size: 8px;
+    }
+
+    .stats {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 </style>
@@ -236,91 +596,142 @@ footer {
 <body>
 
 <header>
-    <div class="logo">SNEAKER<span>VAULT</span></div>
+    <div class="logo">SNEAKER<span>VAULT.</span></div>
 
     <nav>
-        <a href="index.html">HOME</a>
-        <a href="shop.php">SHOP</a>
-        <a href="cart.php">CART</a>
+        <a href="index.php">HOME</a>
+        <a href="shop.php" class="active">SHOP</a>
+        <a href="cart.php" class="cart-link">CART ↗</a>
         <a href="login.php">LOGIN</a>
         <a href="register.php">REGISTER</a>
     </nav>
 </header>
 
 <section class="hero">
-    <h1>OUR <span>COLLECTION.</span></h1>
-    <p>Find your next favourite sneakers.</p>
+    <div class="hero-content">
+        <div class="eyebrow">SNEAKERVAULT / THE COLLECTION</div>
+        <h1>FIND YOUR<br><span>NEW ICON.</span></h1>
+        <p>Discover sneakers that define your style. Explore iconic silhouettes, timeless classics and the latest streetwear essentials.</p>
+        <a href="#collection" class="hero-button">EXPLORE COLLECTION &nbsp; ↘</a>
+    </div>
+    <div class="hero-decoration"></div>
 </section>
 
-<section class="shop">
+<section class="shop" id="collection">
 
     <div class="top">
-        <h2>ALL <span>SNEAKERS</span></h2>
-        <input type="text" id="search" class="search"
-               placeholder="Search sneakers...">
+        <div>
+            <div class="section-label">CURATED FOR YOUR STYLE</div>
+            <h2>THE <span>COLLECTION.</span></h2>
+            <p>Discover your next favourite pair.</p>
+        </div>
+
+        <div class="search-wrap">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="search" class="search" placeholder="Search your sneakers...">
+        </div>
     </div>
 
-    <div class="grid">
+    <div class="stats">
+        <div class="stat"><strong><?= count($products) ?></strong> PRODUCTS</div>
+        <div class="stat"><strong>PREMIUM</strong> QUALITY</div>
+        <div class="stat"><strong>EST. 2026</strong> SNEAKERVAULT</div>
+    </div>
+
+    <div class="grid" id="productGrid">
 
         <?php if (count($products) > 0): ?>
 
-            <?php foreach ($products as $product): ?>
-
+            <?php foreach ($products as $index => $product): ?>
                 <?php
                 $name = $product['name'] ?? 'Sneaker';
-
-                // Use the image assigned above, or the database image.
-                $image = $productImages[$name]
-                    ?? ($product['image'] ?? 'images/placeholder.jpg');
+                $image = $productImages[$name] ?? ($product['image'] ?? 'images/placeholder.jpg');
+                $brand = stripos($name, 'nike') !== false ? 'NIKE' : (stripos($name, 'adidas') !== false ? 'ADIDAS' : 'SNEAKERVAULT');
                 ?>
 
-                <div class="card"
-                     data-name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>">
+                <div class="card" data-name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>">
 
-                    <img
-                        src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8') ?>"
-                        alt="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>"
-                        onerror="this.onerror=null; this.src='images/placeholder.jpg';"
-                    >
+                    <div class="image-box">
+                        <span class="product-number">#<?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?></span>
+                        <span class="product-tag">FEATURED</span>
 
-                    <h3><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></h3>
-
-                    <div class="price">
-                        €<?= number_format((float)$product['price'], 2) ?>
+                        <img
+                            src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>"
+                            onerror="this.onerror=null;this.src='images/placeholder.jpg';"
+                        >
                     </div>
 
-                    <a href="product.php?id=<?= (int)$product['id'] ?>">
-                        VIEW PRODUCT
-                    </a>
+                    <div class="card-info">
+                        <div class="brand"><?= htmlspecialchars($brand) ?> / ORIGINAL COLLECTION</div>
 
+                        <h3><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></h3>
+
+                        <div class="card-bottom">
+                            <div class="price">
+                                <small>€</small><?= number_format((float)$product['price'], 2) ?>
+                            </div>
+
+                            <a class="view-btn" href="product.php?id=<?= (int)$product['id'] ?>">
+                                VIEW DETAILS ↗
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
             <?php endforeach; ?>
 
         <?php else: ?>
 
-            <p class="empty">No sneakers available yet.</p>
+            <div class="empty">
+                <h3>NO SNEAKERS YET.</h3>
+                <p>Our collection is currently being updated. Check back soon.</p>
+            </div>
 
         <?php endif; ?>
 
     </div>
+
+
+
 </section>
 
 <footer>
-    © 2026 SNEAKERVAULT — ALL RIGHTS RESERVED
+    <div class="footer-top">
+        <div>
+            <div class="logo">SNEAKER<span>VAULT.</span></div>
+            <p class="footer-description">Step into your own style. Discover the difference.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.php">HOME</a>
+            <a href="shop.php">SHOP</a>
+            <a href="cart.php">CART</a>
+            <a href="login.php">LOGIN</a>
+        </div>
+    </div>
+
+    <div class="copyright">
+        © 2026 SNEAKERVAULT. ALL RIGHTS RESERVED.
+    </div>
 </footer>
 
 <script>
 const search = document.getElementById("search");
 const cards = document.querySelectorAll(".card");
+const noResults = document.getElementById("noResults");
 
 search.addEventListener("input", function() {
     const value = this.value.toLowerCase().trim();
+    let visible = 0;
 
     cards.forEach(card => {
-        card.style.display =
-            card.dataset.name.toLowerCase().includes(value) ? "" : "none";
+        const match = card.dataset.name.toLowerCase().includes(value);
+        card.style.display = match ? "" : "none";
+        if (match) visible++;
     });
+
+    noResults.style.display = visible === 0 && cards.length > 0 ? "block" : "none";
 });
 </script>
 
