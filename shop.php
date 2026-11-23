@@ -13,7 +13,10 @@ $productImages = [
     "Adidas Samba OG" => "images/images (5).png",
     "Adidas Campus 00s" => "images/images (6).png",
     "Adidas Gazelle" => "images/images3.png",
-    "Adidas Ultraboost" => "images/images44.png"
+    "Adidas Ultraboost" => "images/images44.png",
+    "air jordan 1" => "images/sneaker.png",
+    "air jordan 1 retro" => "images/sneaker1.png",
+    
 ];
 ?>
 
@@ -420,20 +423,27 @@ nav .cart-link {
     font-size: 11px;
 }
 
+.card-bottom form {
+    margin: 0;
+}
+
 .view-btn {
     background: #00e5ff;
     color: #05090b;
-    text-decoration: none;
-    padding: 11px 13px;
-    font-size: 9px;
+    border: none;
+    padding: 12px 17px;
+    font-size: 10px;
     font-weight: 900;
-    letter-spacing: .5px;
-    white-space: nowrap;
+    letter-spacing: 1px;
+    cursor: pointer;
     transition: .3s;
+    white-space: nowrap;
 }
 
 .view-btn:hover {
     background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px #00e5ff33;
 }
 
 .empty {
@@ -448,6 +458,19 @@ nav .cart-link {
 .empty h3 {
     color: white;
     font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.no-results {
+    display: none;
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 50px 20px;
+    color: #929da3;
+}
+
+.no-results h3 {
+    color: white;
     margin-bottom: 10px;
 }
 
@@ -614,6 +637,7 @@ footer {
         <p>Discover sneakers that define your style. Explore iconic silhouettes, timeless classics and the latest streetwear essentials.</p>
         <a href="#collection" class="hero-button">EXPLORE COLLECTION &nbsp; ↘</a>
     </div>
+
     <div class="hero-decoration"></div>
 </section>
 
@@ -643,17 +667,24 @@ footer {
         <?php if (count($products) > 0): ?>
 
             <?php foreach ($products as $index => $product): ?>
+
                 <?php
-                $name = $product['name'] ?? 'Sneaker';
-                $image = $productImages[$name] ?? ($product['image'] ?? 'images/placeholder.jpg');
-                $brand = stripos($name, 'nike') !== false ? 'NIKE' : (stripos($name, 'adidas') !== false ? 'ADIDAS' : 'SNEAKERVAULT');
+                    $name = $product['name'] ?? 'Sneaker';
+                    $image = $productImages[$name] ?? ($product['image'] ?? 'images/placeholder.jpg');
+
+                    $brand = stripos($name, 'nike') !== false
+                        ? 'NIKE'
+                        : (stripos($name, 'adidas') !== false ? 'ADIDAS' : 'SNEAKERVAULT');
                 ?>
 
                 <div class="card" data-name="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>">
 
                     <div class="image-box">
                         <span class="product-number">#<?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?></span>
-                        <span class="product-tag">FEATURED</span>
+
+                        <span class="product-tag">
+                            <?= $index >= count($products) - 3 ? 'NEW ARRIVAL' : 'FEATURED' ?>
+                        </span>
 
                         <img
                             src="<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8') ?>"
@@ -663,18 +694,37 @@ footer {
                     </div>
 
                     <div class="card-info">
-                        <div class="brand"><?= htmlspecialchars($brand) ?> / ORIGINAL COLLECTION</div>
+
+                        <div class="brand">
+                            <?= htmlspecialchars($brand) ?> / ORIGINAL COLLECTION
+                        </div>
 
                         <h3><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></h3>
 
                         <div class="card-bottom">
+
                             <div class="price">
                                 <small>€</small><?= number_format((float)$product['price'], 2) ?>
                             </div>
 
-                            <a class="view-btn" href="product.php?id=<?= (int)$product['id'] ?>">
-                                VIEW DETAILS ↗
-                            </a>
+                            <form action="add-to-cart.php" method="POST">
+                                <input
+                                    type="hidden"
+                                    name="product_id"
+                                    value="<?= (int)$product['id'] ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="quantity"
+                                    value="1"
+                                >
+
+                                <button type="submit" class="view-btn">
+                                    BUY NOW ↗
+                                </button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -690,14 +740,18 @@ footer {
 
         <?php endif; ?>
 
+        <div class="no-results" id="noResults">
+            <h3>No sneakers found.</h3>
+            <p>Try searching for another sneaker.</p>
+        </div>
+
     </div>
-
-
 
 </section>
 
 <footer>
     <div class="footer-top">
+
         <div>
             <div class="logo">SNEAKER<span>VAULT.</span></div>
             <p class="footer-description">Step into your own style. Discover the difference.</p>
@@ -709,6 +763,7 @@ footer {
             <a href="cart.php">CART</a>
             <a href="login.php">LOGIN</a>
         </div>
+
     </div>
 
     <div class="copyright">
@@ -722,16 +777,24 @@ const cards = document.querySelectorAll(".card");
 const noResults = document.getElementById("noResults");
 
 search.addEventListener("input", function() {
+
     const value = this.value.toLowerCase().trim();
     let visible = 0;
 
     cards.forEach(card => {
+
         const match = card.dataset.name.toLowerCase().includes(value);
+
         card.style.display = match ? "" : "none";
+
         if (match) visible++;
+
     });
 
-    noResults.style.display = visible === 0 && cards.length > 0 ? "block" : "none";
+    noResults.style.display = visible === 0 && cards.length > 0
+        ? "block"
+        : "none";
+
 });
 </script>
 

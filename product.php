@@ -22,6 +22,8 @@ $productImages = [
     "Adidas Campus 00s" => "images/images (6).png",
     "Adidas Gazelle" => "images/images3.png",
     "Adidas Ultraboost" => "images/images44.png"
+     "Nike Air Max" => "images/sneaker1.png",
+      "Adidas Gazelle" => "images/sneaker.png",
 
     "Nike Air Jordan 4" => "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600",
     "Nike Air Max 270" => "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",

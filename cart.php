@@ -71,7 +71,8 @@ $productImages = [
     "Adidas Samba OG" => "images/images (5).png",
     "Adidas Campus 00s" => "images/images (6).png",
     "Adidas Gazelle" => "images/images3.png",
-    "Adidas Ultraboost" => "images/images44.png"
+    "Adidas Ultraboost" => "images/images44.png",
+
 ];
 ?>
 
@@ -366,6 +367,11 @@ button, .shop-btn {
     </div>
 
 <?php endif; ?>
+
+<p class="empty" id="noItems" style="display:none;">
+    <h3>hope you enjoy your purchase!</h3>
+    <a href="shop.php" class="shop-btn">START SHOPPING</a>
+</p>
 
 </div>
 
