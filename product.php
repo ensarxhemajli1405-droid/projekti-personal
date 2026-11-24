@@ -21,21 +21,10 @@ $productImages = [
     "Adidas Samba OG" => "images/images (5).png",
     "Adidas Campus 00s" => "images/images (6).png",
     "Adidas Gazelle" => "images/images3.png",
-    "Adidas Ultraboost" => "images/images44.png"
-     "Nike Air Max" => "images/sneaker1.png",
-      "Adidas Gazelle" => "images/sneaker.png",
-
-    "Nike Air Jordan 4" => "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600",
-    "Nike Air Max 270" => "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
-    "Nike Blazer Mid" => "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600",
-    "Nike Dunk Low" => "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600",
-    "Adidas Superstar" => "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600",
-    "New Balance 550" => "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600",
-    "Puma RS-X" => "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
-    "Converse Chuck Taylor" => "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?w=600"
+    "Adidas Ultraboost" => "images/images44.png",
+    "air jordan 1" => "images/sneaker.png",
+    "air jordan 1 retro" => "images/sneaker1.png",
 ];
-
-
 
 $image = $productImages[$product['name']] ?? $product['image'] ?? '';
 ?>

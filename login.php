@@ -38,142 +38,232 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | SneakerVault</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Inter, Arial, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #080b10;
-    color: white;
+    background: #09090f;
+    color: #f4f0fa;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 nav {
+    height: 80px;
+    padding: 0 8%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 8%;
-    border-bottom: 1px solid #1c2932;
+    background: #0d0b15;
+    border-bottom: 1px solid #a855f725;
 }
 
 .logo {
-    color: #00eaff;
+    color: #a855f7;
     font-size: 25px;
-    font-weight: bold;
+    font-weight: 900;
+    letter-spacing: -1px;
     text-decoration: none;
-    text-shadow: 0 0 12px #00eaff;
+}
+
+.logo span {
+    color: #f4f0fa;
 }
 
 nav a {
-    color: white;
+    color: #bcb4ca;
     text-decoration: none;
-    margin-left: 20px;
+    margin-left: 25px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .3s;
 }
 
 nav a:hover {
-    color: #00eaff;
+    color: #e879f9;
 }
 
 .container {
-    min-height: 85vh;
+    min-height: calc(100vh - 145px);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 50px 20px;
+    position: relative;
+    overflow: hidden;
+    background:
+    radial-gradient(ellipse at 20% 50%, #35164c45, transparent 45%),
+    radial-gradient(ellipse at 80% 40%, #9333ea25, transparent 45%);
+}
+
+.container:before {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: #a855f7;
+    filter: blur(170px);
+    opacity: .13;
+    top: 15%;
+    right: 15%;
 }
 
 .login-box {
     width: 100%;
-    max-width: 420px;
-    padding: 40px;
-    background: #101820;
-    border: 1px solid #00d9ff;
-    border-radius: 15px;
-    box-shadow: 0 0 25px rgba(0, 217, 255, 0.2);
+    max-width: 440px;
+    padding: 45px;
+    background: linear-gradient(145deg, #21152f, #110d1c);
+    border: 1px solid #a855f755;
+    border-radius: 18px;
+    box-shadow: 0 25px 70px #0008, 0 0 35px #9333ea18;
+    position: relative;
+    z-index: 2;
 }
 
 .login-box h1 {
     text-align: center;
-    margin-bottom: 10px;
-    color: #00eaff;
+    margin-bottom: 12px;
+    font-size: 30px;
+    font-weight: 900;
+    color: #d879ff;
+    letter-spacing: -1px;
 }
 
 .subtitle {
     text-align: center;
-    color: #9baab5;
-    margin-bottom: 30px;
+    color: #aaa2b8;
+    margin-bottom: 35px;
+    font-size: 13px;
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #e4d6f3;
 }
 
 .input-group input {
     width: 100%;
-    padding: 14px;
-    background: #080b10;
-    border: 1px solid #344550;
+    padding: 15px;
+    background: #09090f;
+    border: 1px solid #49345d;
     border-radius: 8px;
     color: white;
     outline: none;
+    font-size: 13px;
+    transition: .3s;
+}
+
+.input-group input::placeholder {
+    color: #756a82;
 }
 
 .input-group input:focus {
-    border-color: #00eaff;
-    box-shadow: 0 0 10px rgba(0, 234, 255, 0.2);
+    border-color: #c084fc;
+    box-shadow: 0 0 15px #a855f730;
 }
 
 .login-btn {
     width: 100%;
-    padding: 14px;
-    background: #00d9ff;
+    padding: 15px;
+    background: linear-gradient(110deg, #9333ea, #c026d3);
     border: none;
     border-radius: 8px;
-    color: #061016;
-    font-weight: bold;
-    font-size: 16px;
+    color: white;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: .3s;
+    box-shadow: 0 8px 25px #9333ea35;
 }
 
 .login-btn:hover {
-    background: white;
-    box-shadow: 0 0 18px #00eaff;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px #c026d355;
 }
 
 .error {
-    background: #401b22;
-    color: #ff9aa8;
-    padding: 12px;
-    border-radius: 7px;
-    margin-bottom: 20px;
+    background: #401b35;
+    border: 1px solid #e879f955;
+    color: #ff9adf;
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 22px;
     text-align: center;
+    font-size: 13px;
+}
+
+.success {
+    background: #251537;
+    border: 1px solid #a855f755;
+    color: #d879ff;
+    padding: 13px;
+    border-radius: 8px;
+    margin-bottom: 22px;
+    text-align: center;
+    font-size: 13px;
 }
 
 .register-link {
     text-align: center;
-    margin-top: 25px;
-    color: #aab7c0;
+    margin-top: 27px;
+    color: #aaa2b8;
+    font-size: 13px;
 }
 
 .register-link a {
-    color: #00eaff;
+    color: #e879f9;
     text-decoration: none;
+    font-weight: 700;
+}
+
+.register-link a:hover {
+    color: #c084fc;
 }
 
 footer {
     text-align: center;
-    padding: 20px;
-    color: #65737e;
+    padding: 22px;
+    background: #07060d;
+    border-top: 1px solid #a855f725;
+    color: #756a82;
+    font-size: 11px;
+}
+
+@media(max-width:600px) {
+    nav {
+        height: auto;
+        padding: 20px 5%;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav a {
+        margin: 0 8px;
+        font-size: 11px;
+    }
+
+    .login-box {
+        padding: 30px 23px;
+    }
+
+    .login-box h1 {
+        font-size: 26px;
+    }
 }
 </style>
 </head>
@@ -181,12 +271,12 @@ footer {
 <body>
 
 <nav>
-    <a href="index.html" class="logo">SNEAKERVAULT</a>
+    <a href="index.php" class="logo">SNEAKER<span>VAULT</span></a>
 
     <div>
-        <a href="index.html">HOME</a>
+        <a href="index.php">HOME</a>
         <a href="shop.php">SHOP</a>
-        <a href="cart.php">CART 🛒</a>
+        <a href="cart.php">CART</a>
         <a href="register.php">REGISTER</a>
     </div>
 </nav>
@@ -204,7 +294,7 @@ footer {
         <?php endif; ?>
 
         <?php if (isset($_GET["registered"])): ?>
-            <div style="color:#00eaff; text-align:center; margin-bottom:20px;">
+            <div class="success">
                 Account created! You can now log in.
             </div>
         <?php endif; ?>
