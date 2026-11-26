@@ -1,40 +1,94 @@
+
 <?php
 session_start();
 require_once "config/database.php";
 
 $error = "";
 
+$name = "";
+$email = "";
+
+if (empty($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
     $name = trim($_POST["name"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
     $confirmPassword = $_POST["confirm_password"] ?? "";
+    $csrfToken = $_POST["csrf_token"] ?? "";
 
-    if ($name === "" || $email === "" || $password === "" || $confirmPassword === "") {
+    if (!hash_equals($_SESSION["csrf_token"], $csrfToken)) {
+        $error = "Invalid request. Please refresh the page.";
+
+    } elseif (
+        $name === "" ||
+        $email === "" ||
+        $password === "" ||
+        $confirmPassword === ""
+    ) {
         $error = "Please fill in all fields.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+    } elseif (strlen($name) > 100) {
+        $error = "Name is too long.";
+
+    } elseif (strlen($email) > 150 ||
+              !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address.";
+
     } elseif (strlen($password) < 8) {
         $error = "Password must be at least 8 characters.";
+
+    } elseif (strlen($password) > 4096) {
+        $error = "Password is too long.";
+
     } elseif ($password !== $confirmPassword) {
         $error = "Passwords do not match.";
-    } else {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
 
-        if ($stmt->fetch()) {
-            $error = "This email is already registered.";
-        } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    } else {
+        try {
 
             $stmt = $pdo->prepare(
-                "INSERT INTO users (name, email, password) VALUES (?, ?, ?)"
+                "SELECT id FROM users WHERE email = ? LIMIT 1"
             );
 
-            $stmt->execute([$name, $email, $hashedPassword]);
+            $stmt->execute([$email]);
 
-            header("Location: login.php?registered=1");
-            exit;
+            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+                $error = "This email is already registered.";
+
+            } else {
+             
+    
+
+               
+                
+
+              
+                $stmt = $pdo->prepare(
+                    "INSERT INTO users (name, email, password)
+                     VALUES (?, ?, ?)"
+                );
+
+                $stmt->execute([
+                    $name,
+                    $email,
+                    $password,
+                ]);
+
+              
+                $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+
+                header("Location: login.php?registered=1");
+                exit;
+            }
+
+        } catch (PDOException $e) {
+         
+            error_log($e->getMessage());
+            $error = "Something went wrong. Please try again.";
         }
     }
 }
@@ -95,7 +149,11 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     padding: 30px;
-    background: radial-gradient(circle at center, #21152F 0%, #09090F 65%);
+    background: radial-gradient(
+        circle at center,
+        #21152F 0%,
+        #09090F 65%
+    );
 }
 
 .register-box {
@@ -236,54 +294,72 @@ footer {
 
         <?php if ($error !== ""): ?>
             <div class="error">
-                <?= htmlspecialchars($error) ?>
+                <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
             </div>
         <?php endif; ?>
 
         <form method="POST" action="register.php">
 
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars(
+                    $_SESSION["csrf_token"],
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>"
+            >
+
             <div class="input-group">
-                <label>Full Name</label>
+                <label for="name">Full Name</label>
                 <input
                     type="text"
+                    id="name"
                     name="name"
                     placeholder="Enter your full name"
-                    value="<?= htmlspecialchars($name ?? '') ?>"
+                    value="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>"
                     maxlength="100"
                     required
                 >
             </div>
 
             <div class="input-group">
-                <label>Email Address</label>
+                <label for="email">Email Address</label>
                 <input
                     type="email"
+                    id="email"
                     name="email"
                     placeholder="Enter your email"
-                    value="<?= htmlspecialchars($email ?? '') ?>"
+                    value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>"
                     maxlength="150"
                     required
                 >
             </div>
 
             <div class="input-group">
-                <label>Password</label>
+                <label for="password">Password</label>
                 <input
                     type="password"
+                    id="password"
                     name="password"
                     placeholder="At least 8 characters"
                     minlength="8"
+                    maxlength="4096"
+                    autocomplete="new-password"
                     required
                 >
             </div>
 
             <div class="input-group">
-                <label>Confirm Password</label>
+                <label for="confirm_password">Confirm Password</label>
                 <input
                     type="password"
+                    id="confirm_password"
                     name="confirm_password"
                     placeholder="Repeat your password"
                     minlength="8"
+                    maxlength="4096"
+                    autocomplete="new-password"
                     required
                 >
             </div>
